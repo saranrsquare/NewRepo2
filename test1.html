@@ -1,0 +1,72 @@
+<section class="bdy">
+    <div class="container">
+        <form [formGroup]="studentFrom">
+            <div class="row mb-3">
+                <label for="stuName">Name</label>
+                <input type="text" name="stuName" id="stuName" class="form-control stuName" formControlName="name">
+                <!-- <span class="error-content" *ngIf="!name.valid && name.touched">Enter Name</span> -->
+            </div>
+            <div class="row mb-3">
+                <label for="stuEmail">Email</label>
+                <input type="email" name="stuEmail" id="stuEmail" class="form-control stuEmail"  formControlName="email">
+                <!-- <span class="error-content" *ngIf="!email.valid && email.touched">Enter Email</span> -->
+            </div>
+            <div class="row mb-3">
+                <label for="stuEmail" class="pb-2">Gender</label>
+                <input type="radio" name="stuGender" class="w-auto" id="stuGender" value="1"  formControlName="gender">Male
+                <input type="radio" name="stuGender" class="w-auto" id="stuGender" value="2"  formControlName="gender">Female
+                <!-- <span class="error-content" *ngIf="!gender.valid && gender.touched">Enter Select Country</span> -->
+            </div>
+            <div class="row mb-3">
+                <select name="stuCounty" id="stuCounty" class="form-control"  formControlName="country">
+                    <option value="" selected>Select Country</option>
+                    <option *ngFor="let c of countries" value="c">{{c}}</option>
+                </select>
+                <!-- <span class="error-content" *ngIf="!county.valid && county.touched">Enter Select Country</span> -->
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-2">
+                    <button class="btn btn-primary" (click)="onSubmit()" >Submit</button>
+                    <!-- [disabled]="!studentFrom.valid" -->
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-primary" (click)="onClear()">Clear</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-reactive-from',
+  templateUrl: './reactive-from.component.html',
+  styleUrls: ['./reactive-from.component.scss']
+})
+export class ReactiveFromComponent {
+
+  countries: any = ["india", "aus", "as", "wi", "nz"];
+  @ViewChild("studentFrom") studentFrom: FormGroup = new FormGroup({
+      name: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      gender: new FormControl(null, Validators.required),
+      country: new FormControl(null, Validators.required),
+    });
+
+  ngOnInit(): void {
+
+  }
+
+  onSubmit(): void {
+    console.log("onSubmit ", this.studentFrom);
+  }
+
+  onClear(): void {
+    this.studentFrom.reset()
+    console.log("onClear ");
+    
+  }
+  
+}
